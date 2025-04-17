@@ -1,4 +1,4 @@
-########## This code generates the data and the contour plot for the current 
+########## This code generates data and contour plots for the current 
 ########## version of the paper
 
 ####Set the working directory####
@@ -46,7 +46,7 @@ objFunc <- function(r,T){
 
 evalPobaNoDefault <- function(r,T,params){
   #
-  # This function calculates the probability of no-default adopting the 
+  # This function calculates the probability of no-default by adopting the 
   # barrier option theory (For details see the appendix of the paper).
   #
   #INPUTS: - r: the annual staking reward rate
@@ -179,7 +179,7 @@ produceContourPlot <- function(params, rGrid, tGrid, FigName, lowerProbaNoDefaul
   o <- objFunc(rGrid,tGrid)
   o[probNoDefault < lowerProbaNoDefault] <- -0.03 # The value of the objective function for
   #the values of t and r that do not satisfy the constraints is set to -0.03
-  #Assign the values to the corresponding columns
+  #Assign the values to the corresponding columns of the data frame
   datab['r'] <- rGrid
   datab['t'] <- tGrid
   datab['tr'] <- o
@@ -203,6 +203,7 @@ produceContourPlot <- function(params, rGrid, tGrid, FigName, lowerProbaNoDefaul
 
 
 ####Parameter set up for all the scenarios####
+
 tMax <- 2 # Maximum duration of the contract (Upper bound on t)
 tStarr <- tMax # Arg maximum value of f(t) for t in the constraints' set
 rhoGrid <- c(-1, -0.5, 0, 0.5, 1) # Grid of values of the correlation coefficient
@@ -295,6 +296,8 @@ for (i in 1:length(rhoGrid)){
   maximumsIV <- rbind(maximumsIV , mval)
   
 }
+
+####Save the data on the optimal staking policy####
 
 write_xlsx(maximumsI, "maximumsIa.xlsx")
 write_xlsx(maximumsII, "maximumsIIa.xlsx")
